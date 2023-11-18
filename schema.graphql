@@ -1,0 +1,79 @@
+#ENTITIES
+
+enum UserActions {
+  CANCEL_BUY_ORDER
+  CANCEL_SELL_ORDER
+  CREATE_ORDER
+  EXECUTE_BUY_ORDER
+  EXECUTE_SELL_ORDER
+  INVESTED
+  WITHDRAW
+}
+
+enum StrategyTypes {
+  ACCUMULATION #done
+  DCA #done
+  RSI #done
+  GRID #done
+}
+
+type Pool @entity {
+  id: ID! # address
+  ordersCount: Int!
+  usersCount: Int!
+  deposit: BigInt!
+  fiatBalance: BigInt!
+  tokenBalance: BigInt!
+  tradeVolume: BigInt!
+  strategyType: StrategyTypes!
+}
+
+type PoolUser @entity {
+  id: ID! # address
+  user: Bytes!
+  ordersCount: Int!
+  deposit: BigInt!
+  fiatBalance: BigInt!
+  tokenBalance: BigInt!
+  strategyType: StrategyTypes!
+}
+
+type UserEntity @entity {
+  id: ID! # address-strategyType-tokenAddress
+  user: Bytes!
+  deposit: BigInt!
+  fiatBalance: BigInt!
+  tokenBalance: BigInt!
+  strategyType: StrategyTypes!
+  tokenAddress: Bytes!
+}
+
+type Order @entity {
+  id: ID! # address-tokenAddress
+  orderId: Int!
+  fromToken: Bytes!
+  toToken: Bytes!
+  user: Bytes!
+  price: BigInt!
+  amount: BigInt!
+  isBuy: Boolean
+  open: Boolean
+  executed: Boolean
+  orderHash: String
+}
+
+type UserActivity @entity {
+  id: ID!
+  user: Bytes!
+  orderId: Int
+  fromAddress: Bytes!
+  toAddress: Bytes!
+  action: UserActions!
+  price: BigInt!
+  amount: BigInt!
+  fiat: BigInt!
+  token: BigInt!
+  strategyType: StrategyTypes!
+  txHash: String!
+  timestamp: String!
+}

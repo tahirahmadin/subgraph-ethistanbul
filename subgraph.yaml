@@ -1,0 +1,36 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SleepSwapMasterChef
+    network: matic
+    source:
+      address: "0x726530947d9F141d39fdb274CEEBF28B55F6807a"
+      abi: SleepSwapMasterChef
+      startBlock: 50085663
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Staked
+        - OrderCreated
+        - Withdraw
+        - OrderExecuted
+        - CancelOrder
+      abis:
+        - name: SleepSwapMasterChef
+          file: ./abis/SleepSwapMasterChef.json
+      eventHandlers:
+        - event: Staked(uint256,indexed address,uint256,uint256,address,address,uint256)
+          handler: handleStaked
+        - event: OrderCreated(uint256,address,address,address,uint256,uint256,bool,bool,bool,string)
+          handler: handleOrderCreated
+        - event: OrderExecuted(uint256,string,uint256,uint256)
+          handler: handleOrderExecuted
+        - event: CancelOrder(indexed address,uint256,bool)
+          handler: handleCancelOrder
+        - event: Withdraw(uint256,indexed address,address,uint256)
+          handler: handleWithdraw
+      file: ./src/tradeMapping.ts
