@@ -44,6 +44,7 @@ export function handleOrderCreated(event: OrderCreated): void {
   order.open = event.params.open;
   order.executed = event.params.executed;
   order.orderHash = event.params.orderHash;
+  order.startAt = event.params.startAt;
   order.save();
 
   // Logging - Activity

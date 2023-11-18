@@ -317,6 +317,7 @@ export class Order extends Entity {
     this.set("amount", Value.fromBigInt(BigInt.zero()));
     this.set("isBuy", Value.fromBoolean(false));
     this.set("open", Value.fromBoolean(false));
+    this.set("startAt", Value.fromBigInt(BigInt.zero()));
     this.set("executed", Value.fromBoolean(false));
   }
 
@@ -416,6 +417,15 @@ export class Order extends Entity {
 
   set open(value: boolean) {
     this.set("open", Value.fromBoolean(value));
+  }
+
+  get startAt(): BigInt {
+    let value = this.get("startAt");
+    return value!.toBigInt();
+  }
+
+  set startAt(value: BigInt) {
+    this.set("startAt", Value.fromBigInt(value));
   }
 
   get executed(): boolean {

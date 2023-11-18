@@ -69,24 +69,28 @@ export class OrderCreated__Params {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get amount(): BigInt {
+  get startAt(): BigInt {
     return this._event.parameters[5].value.toBigInt();
   }
 
-  get isBuy(): boolean {
-    return this._event.parameters[6].value.toBoolean();
+  get amount(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
   }
 
-  get open(): boolean {
+  get isBuy(): boolean {
     return this._event.parameters[7].value.toBoolean();
   }
 
-  get executed(): boolean {
+  get open(): boolean {
     return this._event.parameters[8].value.toBoolean();
   }
 
+  get executed(): boolean {
+    return this._event.parameters[9].value.toBoolean();
+  }
+
   get orderHash(): string {
-    return this._event.parameters[9].value.toString();
+    return this._event.parameters[10].value.toString();
   }
 }
 
@@ -222,9 +226,10 @@ export class SleepSwapMasterChef__ordersResult {
   value4: BigInt;
   value5: BigInt;
   value6: boolean;
-  value7: boolean;
+  value7: BigInt;
   value8: boolean;
-  value9: string;
+  value9: boolean;
+  value10: string;
 
   constructor(
     value0: BigInt,
@@ -234,9 +239,10 @@ export class SleepSwapMasterChef__ordersResult {
     value4: BigInt,
     value5: BigInt,
     value6: boolean,
-    value7: boolean,
+    value7: BigInt,
     value8: boolean,
-    value9: string
+    value9: boolean,
+    value10: string
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -248,6 +254,7 @@ export class SleepSwapMasterChef__ordersResult {
     this.value7 = value7;
     this.value8 = value8;
     this.value9 = value9;
+    this.value10 = value10;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -259,9 +266,10 @@ export class SleepSwapMasterChef__ordersResult {
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
     map.set("value6", ethereum.Value.fromBoolean(this.value6));
-    map.set("value7", ethereum.Value.fromBoolean(this.value7));
+    map.set("value7", ethereum.Value.fromUnsignedBigInt(this.value7));
     map.set("value8", ethereum.Value.fromBoolean(this.value8));
-    map.set("value9", ethereum.Value.fromString(this.value9));
+    map.set("value9", ethereum.Value.fromBoolean(this.value9));
+    map.set("value10", ethereum.Value.fromString(this.value10));
     return map;
   }
 }
@@ -304,7 +312,7 @@ export class SleepSwapMasterChef extends ethereum.SmartContract {
   orders(param0: BigInt): SleepSwapMasterChef__ordersResult {
     let result = super.call(
       "orders",
-      "orders(uint256):(uint256,address,address,address,uint256,uint256,bool,bool,bool,string)",
+      "orders(uint256):(uint256,address,address,address,uint256,uint256,bool,uint256,bool,bool,string)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
@@ -316,9 +324,10 @@ export class SleepSwapMasterChef extends ethereum.SmartContract {
       result[4].toBigInt(),
       result[5].toBigInt(),
       result[6].toBoolean(),
-      result[7].toBoolean(),
+      result[7].toBigInt(),
       result[8].toBoolean(),
-      result[9].toString()
+      result[9].toBoolean(),
+      result[10].toString()
     );
   }
 
@@ -327,7 +336,7 @@ export class SleepSwapMasterChef extends ethereum.SmartContract {
   ): ethereum.CallResult<SleepSwapMasterChef__ordersResult> {
     let result = super.tryCall(
       "orders",
-      "orders(uint256):(uint256,address,address,address,uint256,uint256,bool,bool,bool,string)",
+      "orders(uint256):(uint256,address,address,address,uint256,uint256,bool,uint256,bool,bool,string)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -343,9 +352,10 @@ export class SleepSwapMasterChef extends ethereum.SmartContract {
         value[4].toBigInt(),
         value[5].toBigInt(),
         value[6].toBoolean(),
-        value[7].toBoolean(),
+        value[7].toBigInt(),
         value[8].toBoolean(),
-        value[9].toString()
+        value[9].toBoolean(),
+        value[10].toString()
       )
     );
   }
@@ -680,28 +690,24 @@ export class StartStrategyCall__Inputs {
     this._call = call;
   }
 
-  get _buyPrices(): Array<BigInt> {
+  get _startTimes(): Array<BigInt> {
     return this._call.inputValues[0].value.toBigIntArray();
   }
 
-  get _sellPrices(): Array<BigInt> {
-    return this._call.inputValues[1].value.toBigIntArray();
-  }
-
   get _amount0(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get _amount1(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get _fromTokenAddress(): Address {
-    return this._call.inputValues[4].value.toAddress();
+    return this._call.inputValues[3].value.toAddress();
   }
 
   get _toTokenAddress(): Address {
-    return this._call.inputValues[5].value.toAddress();
+    return this._call.inputValues[4].value.toAddress();
   }
 }
 
@@ -730,28 +736,24 @@ export class StartStrategyWithDepositCall__Inputs {
     this._call = call;
   }
 
-  get _buyPrices(): Array<BigInt> {
+  get _startTimes(): Array<BigInt> {
     return this._call.inputValues[0].value.toBigIntArray();
   }
 
-  get _sellPrices(): Array<BigInt> {
-    return this._call.inputValues[1].value.toBigIntArray();
-  }
-
   get _amount0(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get _amount1(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get _fromTokenAddress(): Address {
-    return this._call.inputValues[4].value.toAddress();
+    return this._call.inputValues[3].value.toAddress();
   }
 
   get _toTokenAddress(): Address {
-    return this._call.inputValues[5].value.toAddress();
+    return this._call.inputValues[4].value.toAddress();
   }
 }
 
@@ -883,6 +885,32 @@ export class UpdateOrderStatusCall__Outputs {
   _call: UpdateOrderStatusCall;
 
   constructor(call: UpdateOrderStatusCall) {
+    this._call = call;
+  }
+}
+
+export class UserAwailableBalanceCall extends ethereum.Call {
+  get inputs(): UserAwailableBalanceCall__Inputs {
+    return new UserAwailableBalanceCall__Inputs(this);
+  }
+
+  get outputs(): UserAwailableBalanceCall__Outputs {
+    return new UserAwailableBalanceCall__Outputs(this);
+  }
+}
+
+export class UserAwailableBalanceCall__Inputs {
+  _call: UserAwailableBalanceCall;
+
+  constructor(call: UserAwailableBalanceCall) {
+    this._call = call;
+  }
+}
+
+export class UserAwailableBalanceCall__Outputs {
+  _call: UserAwailableBalanceCall;
+
+  constructor(call: UserAwailableBalanceCall) {
     this._call = call;
   }
 }

@@ -58,6 +58,7 @@ type Order @entity {
   amount: BigInt!
   isBuy: Boolean
   open: Boolean
+  startAt: BigInt!
   executed: Boolean
   orderHash: String
 }
