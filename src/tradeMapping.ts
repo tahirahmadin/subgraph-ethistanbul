@@ -34,7 +34,7 @@ export function handleStaked(event: Staked): void {
 export function handleOrderCreated(event: OrderCreated): void {
   // Logging - Create Order
   let order = new Order(event.params.orderId.toString());
-
+  order.orderId = event.params.orderId;
   order.fromToken = event.params.fromToken;
   order.toToken = event.params.toToken;
   order.user = event.params.user;

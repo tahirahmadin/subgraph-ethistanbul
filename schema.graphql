@@ -50,7 +50,7 @@ type UserEntity @entity {
 
 type Order @entity {
   id: ID! # address-tokenAddress
-  orderId: Int!
+  orderId: BigInt!
   fromToken: Bytes!
   toToken: Bytes!
   user: Bytes!

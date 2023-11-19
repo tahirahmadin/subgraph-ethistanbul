@@ -274,9 +274,56 @@ export class SleepSwapMasterChef__ordersResult {
   }
 }
 
+export class SleepSwapMasterChef__readDataFeedResult {
+  value0: BigInt;
+  value1: BigInt;
+
+  constructor(value0: BigInt, value1: BigInt) {
+    this.value0 = value0;
+    this.value1 = value1;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromSignedBigInt(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    return map;
+  }
+}
+
 export class SleepSwapMasterChef extends ethereum.SmartContract {
   static bind(address: Address): SleepSwapMasterChef {
     return new SleepSwapMasterChef("SleepSwapMasterChef", address);
+  }
+
+  airnodeRrp(): Address {
+    let result = super.call("airnodeRrp", "airnodeRrp():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_airnodeRrp(): ethereum.CallResult<Address> {
+    let result = super.tryCall("airnodeRrp", "airnodeRrp():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  feeCollected(): BigInt {
+    let result = super.call("feeCollected", "feeCollected():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_feeCollected(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("feeCollected", "feeCollected():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   feePercent(): BigInt {
@@ -292,6 +339,84 @@ export class SleepSwapMasterChef extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  fulfilledData(param0: Bytes, param1: BigInt): BigInt {
+    let result = super.call(
+      "fulfilledData",
+      "fulfilledData(bytes32,uint256):(int256)",
+      [
+        ethereum.Value.fromFixedBytes(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_fulfilledData(
+    param0: Bytes,
+    param1: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "fulfilledData",
+      "fulfilledData(bytes32,uint256):(int256)",
+      [
+        ethereum.Value.fromFixedBytes(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  hasUserPositionActive(param0: Address): i32 {
+    let result = super.call(
+      "hasUserPositionActive",
+      "hasUserPositionActive(address):(uint16)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+
+    return result[0].toI32();
+  }
+
+  try_hasUserPositionActive(param0: Address): ethereum.CallResult<i32> {
+    let result = super.tryCall(
+      "hasUserPositionActive",
+      "hasUserPositionActive(address):(uint16)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toI32());
+  }
+
+  incomingFulfillments(param0: Bytes): boolean {
+    let result = super.call(
+      "incomingFulfillments",
+      "incomingFulfillments(bytes32):(bool)",
+      [ethereum.Value.fromFixedBytes(param0)]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_incomingFulfillments(param0: Bytes): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "incomingFulfillments",
+      "incomingFulfillments(bytes32):(bool)",
+      [ethereum.Value.fromFixedBytes(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   manager(): Address {
@@ -456,19 +581,67 @@ export class SleepSwapMasterChef extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  tokenBalance(): BigInt {
-    let result = super.call("tokenBalance", "tokenBalance():(uint256)", []);
+  proxyAddress(): Address {
+    let result = super.call("proxyAddress", "proxyAddress():(address)", []);
 
-    return result[0].toBigInt();
+    return result[0].toAddress();
   }
 
-  try_tokenBalance(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("tokenBalance", "tokenBalance():(uint256)", []);
+  try_proxyAddress(): ethereum.CallResult<Address> {
+    let result = super.tryCall("proxyAddress", "proxyAddress():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  readDataFeed(): SleepSwapMasterChef__readDataFeedResult {
+    let result = super.call(
+      "readDataFeed",
+      "readDataFeed():(int224,uint256)",
+      []
+    );
+
+    return new SleepSwapMasterChef__readDataFeedResult(
+      result[0].toBigInt(),
+      result[1].toBigInt()
+    );
+  }
+
+  try_readDataFeed(): ethereum.CallResult<
+    SleepSwapMasterChef__readDataFeedResult
+  > {
+    let result = super.tryCall(
+      "readDataFeed",
+      "readDataFeed():(int224,uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new SleepSwapMasterChef__readDataFeedResult(
+        value[0].toBigInt(),
+        value[1].toBigInt()
+      )
+    );
+  }
+
+  swapRouter(): Address {
+    let result = super.call("swapRouter", "swapRouter():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_swapRouter(): ethereum.CallResult<Address> {
+    let result = super.tryCall("swapRouter", "swapRouter():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   tokenBalances(param0: Address): BigInt {
@@ -494,44 +667,25 @@ export class SleepSwapMasterChef extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  tokenFees(): BigInt {
-    let result = super.call("tokenFees", "tokenFees():(uint256)", []);
+  userAvailableBalance(_user: Address, _token: Address): BigInt {
+    let result = super.call(
+      "userAvailableBalance",
+      "userAvailableBalance(address,address):(uint256)",
+      [ethereum.Value.fromAddress(_user), ethereum.Value.fromAddress(_token)]
+    );
 
     return result[0].toBigInt();
   }
 
-  try_tokenFees(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("tokenFees", "tokenFees():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  usdtBalance(): BigInt {
-    let result = super.call("usdtBalance", "usdtBalance():(uint256)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_usdtBalance(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("usdtBalance", "usdtBalance():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  usdtFees(): BigInt {
-    let result = super.call("usdtFees", "usdtFees():(uint256)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_usdtFees(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("usdtFees", "usdtFees():(uint256)", []);
+  try_userAvailableBalance(
+    _user: Address,
+    _token: Address
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "userAvailableBalance",
+      "userAvailableBalance(address,address):(uint256)",
+      [ethereum.Value.fromAddress(_user), ethereum.Value.fromAddress(_token)]
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -607,6 +761,18 @@ export class ConstructorCall__Inputs {
   get _manager(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
+
+  get _swapRouter(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get _rrpAddress(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
+  get _proxyAddress(): Address {
+    return this._call.inputValues[3].value.toAddress();
+  }
 }
 
 export class ConstructorCall__Outputs {
@@ -643,6 +809,116 @@ export class AddManagerCall__Outputs {
   _call: AddManagerCall;
 
   constructor(call: AddManagerCall) {
+    this._call = call;
+  }
+}
+
+export class ExecuteOrdersCall extends ethereum.Call {
+  get inputs(): ExecuteOrdersCall__Inputs {
+    return new ExecuteOrdersCall__Inputs(this);
+  }
+
+  get outputs(): ExecuteOrdersCall__Outputs {
+    return new ExecuteOrdersCall__Outputs(this);
+  }
+}
+
+export class ExecuteOrdersCall__Inputs {
+  _call: ExecuteOrdersCall;
+
+  constructor(call: ExecuteOrdersCall) {
+    this._call = call;
+  }
+
+  get _orderIds(): Array<BigInt> {
+    return this._call.inputValues[0].value.toBigIntArray();
+  }
+}
+
+export class ExecuteOrdersCall__Outputs {
+  _call: ExecuteOrdersCall;
+
+  constructor(call: ExecuteOrdersCall) {
+    this._call = call;
+  }
+}
+
+export class FulfillCall extends ethereum.Call {
+  get inputs(): FulfillCall__Inputs {
+    return new FulfillCall__Inputs(this);
+  }
+
+  get outputs(): FulfillCall__Outputs {
+    return new FulfillCall__Outputs(this);
+  }
+}
+
+export class FulfillCall__Inputs {
+  _call: FulfillCall;
+
+  constructor(call: FulfillCall) {
+    this._call = call;
+  }
+
+  get requestId(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get data(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class FulfillCall__Outputs {
+  _call: FulfillCall;
+
+  constructor(call: FulfillCall) {
+    this._call = call;
+  }
+}
+
+export class MakeRequestCall extends ethereum.Call {
+  get inputs(): MakeRequestCall__Inputs {
+    return new MakeRequestCall__Inputs(this);
+  }
+
+  get outputs(): MakeRequestCall__Outputs {
+    return new MakeRequestCall__Outputs(this);
+  }
+}
+
+export class MakeRequestCall__Inputs {
+  _call: MakeRequestCall;
+
+  constructor(call: MakeRequestCall) {
+    this._call = call;
+  }
+
+  get airnode(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get endpointId(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get sponsor(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
+  get sponsorWallet(): Address {
+    return this._call.inputValues[3].value.toAddress();
+  }
+
+  get parameters(): Bytes {
+    return this._call.inputValues[4].value.toBytes();
+  }
+}
+
+export class MakeRequestCall__Outputs {
+  _call: MakeRequestCall;
+
+  constructor(call: MakeRequestCall) {
     this._call = call;
   }
 }
@@ -889,28 +1165,36 @@ export class UpdateOrderStatusCall__Outputs {
   }
 }
 
-export class UserAwailableBalanceCall extends ethereum.Call {
-  get inputs(): UserAwailableBalanceCall__Inputs {
-    return new UserAwailableBalanceCall__Inputs(this);
+export class WithdrawCall extends ethereum.Call {
+  get inputs(): WithdrawCall__Inputs {
+    return new WithdrawCall__Inputs(this);
   }
 
-  get outputs(): UserAwailableBalanceCall__Outputs {
-    return new UserAwailableBalanceCall__Outputs(this);
+  get outputs(): WithdrawCall__Outputs {
+    return new WithdrawCall__Outputs(this);
   }
 }
 
-export class UserAwailableBalanceCall__Inputs {
-  _call: UserAwailableBalanceCall;
+export class WithdrawCall__Inputs {
+  _call: WithdrawCall;
 
-  constructor(call: UserAwailableBalanceCall) {
+  constructor(call: WithdrawCall) {
     this._call = call;
   }
+
+  get airnode(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get sponsorWallet(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
 }
 
-export class UserAwailableBalanceCall__Outputs {
-  _call: UserAwailableBalanceCall;
+export class WithdrawCall__Outputs {
+  _call: WithdrawCall;
 
-  constructor(call: UserAwailableBalanceCall) {
+  constructor(call: WithdrawCall) {
     this._call = call;
   }
 }

@@ -309,7 +309,7 @@ export class Order extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("orderId", Value.fromI32(0));
+    this.set("orderId", Value.fromBigInt(BigInt.zero()));
     this.set("fromToken", Value.fromBytes(Bytes.empty()));
     this.set("toToken", Value.fromBytes(Bytes.empty()));
     this.set("user", Value.fromBytes(Bytes.empty()));
@@ -347,13 +347,13 @@ export class Order extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get orderId(): i32 {
+  get orderId(): BigInt {
     let value = this.get("orderId");
-    return value!.toI32();
+    return value!.toBigInt();
   }
 
-  set orderId(value: i32) {
-    this.set("orderId", Value.fromI32(value));
+  set orderId(value: BigInt) {
+    this.set("orderId", Value.fromBigInt(value));
   }
 
   get fromToken(): Bytes {

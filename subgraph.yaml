@@ -6,7 +6,7 @@ dataSources:
     name: SleepSwapMasterChef
     network: matic
     source:
-      address: "0xBD4B78B3968922e8A53F1d845eB3a128Adc2aA12"
+      address: "0x999b4AcC65b997454De2601Bb9d6BdC2B33238C5"
       abi: SleepSwapMasterChef
       startBlock: 50087903
     mapping:
