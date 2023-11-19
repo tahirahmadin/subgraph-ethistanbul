@@ -31,11 +31,11 @@ type Pool @entity {
 type PoolUser @entity {
   id: ID! # address
   user: Bytes!
-  ordersCount: Int!
-  deposit: BigInt!
+  gridSize: BigInt!
+  amount0: BigInt!
+  toAddress: Bytes!
   fiatBalance: BigInt!
   tokenBalance: BigInt!
-  strategyType: StrategyTypes!
 }
 
 type UserEntity @entity {

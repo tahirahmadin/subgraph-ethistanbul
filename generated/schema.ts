@@ -122,11 +122,11 @@ export class PoolUser extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("user", Value.fromBytes(Bytes.empty()));
-    this.set("ordersCount", Value.fromI32(0));
-    this.set("deposit", Value.fromBigInt(BigInt.zero()));
+    this.set("gridSize", Value.fromBigInt(BigInt.zero()));
+    this.set("amount0", Value.fromBigInt(BigInt.zero()));
+    this.set("toAddress", Value.fromBytes(Bytes.empty()));
     this.set("fiatBalance", Value.fromBigInt(BigInt.zero()));
     this.set("tokenBalance", Value.fromBigInt(BigInt.zero()));
-    this.set("strategyType", Value.fromString(""));
   }
 
   save(): void {
@@ -164,22 +164,31 @@ export class PoolUser extends Entity {
     this.set("user", Value.fromBytes(value));
   }
 
-  get ordersCount(): i32 {
-    let value = this.get("ordersCount");
-    return value!.toI32();
-  }
-
-  set ordersCount(value: i32) {
-    this.set("ordersCount", Value.fromI32(value));
-  }
-
-  get deposit(): BigInt {
-    let value = this.get("deposit");
+  get gridSize(): BigInt {
+    let value = this.get("gridSize");
     return value!.toBigInt();
   }
 
-  set deposit(value: BigInt) {
-    this.set("deposit", Value.fromBigInt(value));
+  set gridSize(value: BigInt) {
+    this.set("gridSize", Value.fromBigInt(value));
+  }
+
+  get amount0(): BigInt {
+    let value = this.get("amount0");
+    return value!.toBigInt();
+  }
+
+  set amount0(value: BigInt) {
+    this.set("amount0", Value.fromBigInt(value));
+  }
+
+  get toAddress(): Bytes {
+    let value = this.get("toAddress");
+    return value!.toBytes();
+  }
+
+  set toAddress(value: Bytes) {
+    this.set("toAddress", Value.fromBytes(value));
   }
 
   get fiatBalance(): BigInt {
@@ -198,15 +207,6 @@ export class PoolUser extends Entity {
 
   set tokenBalance(value: BigInt) {
     this.set("tokenBalance", Value.fromBigInt(value));
-  }
-
-  get strategyType(): string {
-    let value = this.get("strategyType");
-    return value!.toString();
-  }
-
-  set strategyType(value: string) {
-    this.set("strategyType", Value.fromString(value));
   }
 }
 

@@ -1,4 +1,4 @@
-import { Order, UserActivity } from "../generated/schema";
+import { Order, UserActivity, PoolUser } from "../generated/schema";
 
 import {
   CancelOrder,
@@ -10,25 +10,18 @@ import {
 
 export function handleStaked(event: Staked): void {
   // Updating - Position
-  // let positionData = Position.load(event.params.user.toHex());
-  // if (!positionData) {
-  //   positionData = new Position(event.params.user.toHex());
-  //   positionData.user = event.params.user;
-  //   positionData.tokenAddress = event.params.toAddress;
-  // }
-  // positionData.deposit = positionData.deposit.plus(event.params.amount0);
-  // positionData.fiat = positionData.fiat.plus(event.params.amount0);
-  // positionData.token = positionData.token.plus(event.params.amount1);
-  // positionData.save();
-  // Logging - Activity
-  // let activity = new UserActivity(event.params.positionId);
-  // activity.user = event.params.user;
-  // activity.tokenAddress = event.params.toAddress;
-  // activity.action = "STAKED";
-  // activity.amount = event.params.amount0;
-  // activity.fiat = event.params.amount0;
-  // activity.token = event.params.toAddress;
-  // activity.save();
+  let positionData = PoolUser.load(event.params.user.toHex());
+  if (!positionData) {
+    positionData = new PoolUser(event.params.user.toHex());
+    positionData.user = event.params.user;
+    positionData.toAddress = event.params.toAddress;
+    positionData.amount0 = event.params.amount0;
+    positionData.gridSize = event.params.gridSize;
+  }
+
+  positionData.amount0 = positionData.amount0.plus(event.params.amount0);
+  positionData.gridSize = event.params.gridSize;
+  positionData.save();
 }
 
 export function handleOrderCreated(event: OrderCreated): void {
